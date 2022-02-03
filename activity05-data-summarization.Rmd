@@ -1,6 +1,6 @@
 ---
 title: "Activity 5"
-author: "Name"
+author: "Sara"
 output: github_document
 ---
 
@@ -80,6 +80,11 @@ Below, create a code chunk and name it `median_earnings`.
 Make sure there is an empty line above and below the code chunk.
 
 
+```{r median_earnings}
+college_recent_grads %>% 
+  summarise(median(median))
+  
+```
 
 In your newly created R code chunk, verify that the median income for all majors was $36,000.
 Using the `college_recent_grads` dataset and functions from `{dplyr}`, verify the *median* summary statistic for the variable median earnings of full-time, year-round workers (`median`).
@@ -95,12 +100,21 @@ Be careful when you name your output summaries as we are dealing with things tha
 When I and obtaining numerical summaries for variables, I like to include the variable name in my summary name (e.g., `mean_med_earnings = mean(median)`).
 Create a code chunk and name it `summary_earnings`.
 
+```{r summary_earnings}
+  college_recent_grads %>% 
+  summarise(mean_med_earnings = mean(median),
+            sd_med_earnings = sd(median),
+            min_med_earnings = min(median),
+            median_med_earnings = median(median),
+            max_med_earnings = max(median))
+
+```
 
 
 Provide a discussion on what you believe the distribution of median earnings will look like.
 You should discuss the center, spread, and potential shape only using these values - I do NOT want to see any data visualizations here.
 
-**Response**:
+**Response**: I think there will be a large spread and right skewed.
 
 
 ### Median Earnings by Major Category
@@ -110,12 +124,25 @@ Using the `college_recent_grads` dataset and functions from `{dplyr}`, obtain si
 *Arrange* this summary table by the median earning.
 Create a code chunk and name it `major_earnings`.
 
+```{r major_earnings}
+college_recent_grads %>%
+  group_by(major_category) %>% 
+  summarise(mean_med_earnings = mean(median),
+            sd_med_earnings = sd(median),
+            min_med_earnings = min(median),
+            max_med_earnings = max(median))%>% 
+  ungroup() %>% 
+  arrange(min_med_earnings) %>% 
+  knitr::kable()
+  
+```
+
 
 
 Provide a discussion on how each major compares to the overall distribution.
 You should discuss the center, spread, and potential shape only using these summary values - I do NOT want to see any data visualizations here.
 
-**Response**:
+**Response**: I feel like the data will be clustered around the center, but there will be a large skew to the right.
 
 
 Before we continue, add the following to the end of your pipeline (you will need to pipe first) in your `major_earnings` code chunk:
@@ -128,7 +155,7 @@ Knit your document with and without this last piped code.
 What changes about the output?
 When would this `knitr::kable` code be useful?
 
-**Response**:
+**Response**: It makes it look professional.
 
 
 ![](README-img/noun_pause.png) **Planned Pause Point**: If you have any questions, contact your instructor. Otherwise feel free to continue on.
@@ -139,11 +166,18 @@ Let us see how well your descriptions in the [Median Earnings by Major Category]
 Plot the distribution of the variable `median` earnings of full-time, year-round workers for each `major_category` using the *boxplot* and *jitter* geometries.
 Create a code chunk and name it `major_boxplot`.
 
+```{r}
+college_recent_grads %>% 
+  ggplot(mapping  = aes(x= major_category, y = median))+
+  geom_boxplot() + geom_jitter(mapping = aes(color = major_category))
+  
+```
+
 
 
 Provide a discussion on how your descriptions in the Median Earnings by Major Category section compares.
 
-**Response**:
+**Response**: Engineering realy skewed the data.
 
 
 <img src="README-img/noun_pause.png" alt="pause" width = "20"/> <b>Planned Pause Point</b>: If you feel that you have a good understanding of these commands, feel free to start working on your project. The remainder of this activity will help to expand these commands.
